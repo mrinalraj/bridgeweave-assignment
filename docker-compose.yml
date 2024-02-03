@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  # write for postgres
+  db:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: hoteldb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    ports:
+      - 5435:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  server:
+    build: ./server
+    restart: unless-stopped
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://myuser:mypassword@localhost:5435/hoteldb
+      SECRET_KEY: mysecretkey
+      DEBUG: True
+      ALLOWED_HOSTS: localhost
+    networks:
+      - backend
+      - frontend
+
+  client:
+    build: ./client
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    networks:
+      - frontend
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+  frontend:
