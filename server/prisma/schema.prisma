@@ -17,36 +17,35 @@ model Hotel {
   location    String
   address     String
   rating      Float
-  rent        Float
   photos      String[]
-  inclusions  String[]
   rooms       Room[]
   bookings    Booking[]
 }
 
 model Room {
-  id          Int       @id @default(autoincrement())
-  hotelId     Int
-  hotel       Hotel     @relation(fields: [hotelId], references: [id])
-  name        String
-  description String
-  rent        Float
-  photos      String[]
-  inclusions  String[]
-  bookings    Booking[]
+  id         Int       @id @default(autoincrement())
+  hotelId    Int
+  hotel      Hotel     @relation(fields: [hotelId], references: [id])
+  name       String
+  guests     Int
+  beds       Int
+  rent       Float
+  photos     String[]
+  inclusions String[]
+  bookings   Booking[]
 }
 
 model Booking {
-  id       Int      @id @default(autoincrement())
-  hotelId  Int
-  hotel    Hotel    @relation(fields: [hotelId], references: [id])
-  roomId   Int
-  room     Room     @relation(fields: [roomId], references: [id])
-  userId   Int
-  user     User     @relation(fields: [userId], references: [id])
-  checkIn  DateTime
-  checkOut DateTime
-  status   String
+  id        Int      @id @default(autoincrement())
+  hotelId   Int
+  hotel     Hotel    @relation(fields: [hotelId], references: [id])
+  roomId    Int
+  room      Room     @relation(fields: [roomId], references: [id])
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  checkIn   DateTime
+  checkOut  DateTime
+  cancelled Boolean
 }
 
 model User {
@@ -54,5 +53,6 @@ model User {
   name     String
   email    String    @unique
   phone    String
+  deviceId String
   bookings Booking[]
 }

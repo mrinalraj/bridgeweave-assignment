@@ -3,5 +3,5 @@ import { Express } from "express";
 import { HotelController } from "./HotelContoller";
 
 export const controllers = (app: Express) => {
-  app.use("/hotel", HotelController);
+  app.use("/hotels", HotelController);
 };

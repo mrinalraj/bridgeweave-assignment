@@ -1,4 +1,4 @@
-import express, { Express, Request, Response, json } from "express";
+import express, { Express, json } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import morgan from "morgan";
@@ -7,11 +7,12 @@ import { PrismaClient } from "@prisma/client";
 import { NotFound } from "./utils/Errors";
 import { controllers } from "./controller";
 import { logger } from "./Logger";
+import { ErrorMiddleware } from "./middleware/ErrorMiddleware";
 
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8001;
 
 app.use(cors());
 app.use(json());
@@ -24,16 +25,14 @@ app.use("*", () => {
   throw new NotFound("Not Found");
 });
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
-});
+app.use(ErrorMiddleware);
 
 const server = app.listen(port, () => {
   console.log(
     `🚀 Server is running on port ${port} in ${process.env.NODE_ENV}`
   );
 
-  new PrismaClient().$executeRaw`select * from Hotel`.catch(() => {
+  new PrismaClient().$executeRaw`select 1`.catch(() => {
     logger.error("Database Connection Error");
     onClose();
   });

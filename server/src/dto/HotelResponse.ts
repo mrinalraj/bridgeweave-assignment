@@ -8,12 +8,12 @@ export class HotelResponse {
     public location: string,
     public address: string,
     public rating: number,
-    public rent: number,
     public photos: string[],
-    public inclusions: string[]
+    public rooms: any[] = [],
+    public bookings: any[] = []
   ) {}
 
-  public static from(hotel: Hotel) {
+  public static from(hotel: Hotel, rooms: any[] = [], bookings: any[] = []) {
     return new HotelResponse(
       hotel.id,
       hotel.name,
@@ -21,9 +21,9 @@ export class HotelResponse {
       hotel.location,
       hotel.address,
       hotel.rating,
-      hotel.rent,
       hotel.photos,
-      hotel.inclusions
+      rooms,
+      bookings
     );
   }
 }

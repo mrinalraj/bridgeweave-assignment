@@ -12,7 +12,7 @@ export const asyncHandler = (handler: HandlerFn): HandlerFn => {
   return async (req, res, next) => {
     try {
       await handler(req, res, next);
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`${error.message} :: ${error.stack}`);
       next(error);
     }
