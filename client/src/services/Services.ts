@@ -13,4 +13,12 @@ export default {
 
   getBookingList: (deviceId: string) =>
     fetch(`${base}/bookings?deviceId=${deviceId}`).then((res) => res.json()),
+
+  cancelBooking: (bookingId: number) =>
+    fetch(`${base}/bookings/${bookingId}`, { method: "DELETE" }).then((res) =>
+      res.json()
+    ),
+
+  getRoom: (id: number) =>
+    fetch(`${base}/rooms/${id}`).then((res) => res.json()),
 };

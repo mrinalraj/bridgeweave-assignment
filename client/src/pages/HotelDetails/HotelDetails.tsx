@@ -90,11 +90,7 @@ const HotelDetails = () => {
             <Typography color="GrayText">
               <b>1 Room</b> per night
             </Typography>
-            <Button
-              sx={{ marginTop: "2rem" }}
-              variant="contained"
-              href="#room-options"
-            >
+            <Button sx={{ marginTop: "2rem" }} variant="contained">
               View {data?.data?.rooms.length} room options
             </Button>
           </Box>

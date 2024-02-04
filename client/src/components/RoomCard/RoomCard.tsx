@@ -9,6 +9,7 @@ import BedIcon from "@mui/icons-material/Bed";
 import NetworkWifiIcon from "@mui/icons-material/NetworkWifi";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import BakeryDiningIcon from "@mui/icons-material/BakeryDining";
+import { useNavigate } from "react-router-dom";
 
 interface RoomCardProps {
   key: string | number;
@@ -23,6 +24,7 @@ const IconDescriptor = styled(Box)`
 `;
 
 const RoomCard: FC<RoomCardProps> = ({ room }) => {
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -79,7 +81,13 @@ const RoomCard: FC<RoomCardProps> = ({ room }) => {
             <b>1 Room</b> per night
           </Typography>
 
-          <Button sx={{ marginTop: "3rem" }} variant="contained">
+          <Button
+            sx={{ marginTop: "3rem" }}
+            variant="contained"
+            onClick={() => {
+              navigate(`/checkout/${room.id}`);
+            }}
+          >
             Book Now
           </Button>
         </Box>

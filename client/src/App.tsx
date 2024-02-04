@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import Router from "./Router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import DeviceIdUtil from "./utils/DeviceIdUtil";
 
 function App() {
@@ -26,10 +28,12 @@ function App() {
   return (
     <div className="App" style={{ background: "#eef4fd", minHeight: "100vh" }}>
       <QueryClientProvider client={new QueryClient()}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Router />
-        </ThemeProvider>
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Router />
+          </ThemeProvider>
+        </LocalizationProvider>
       </QueryClientProvider>
     </div>
   );

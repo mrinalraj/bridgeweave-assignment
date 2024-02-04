@@ -1,7 +1,9 @@
 import {
   Avatar,
+  Button,
   Card,
   Chip,
+  Link,
   ListItem,
   ListItemAvatar,
   ListItemText,
@@ -10,8 +12,9 @@ import {
 import React, { FC } from "react";
 import { Booking } from "../../models/Booking";
 import ImageBox from "../ImageBox/ImageBox";
-import moment from "moment";
 import DateUtils from "../../utils/DateUtils";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Services from "../../services/Services";
 
 interface BookingCardProps {
   booking: Booking;
@@ -19,8 +22,28 @@ interface BookingCardProps {
 }
 
 const BookingCard: FC<BookingCardProps> = ({ booking, key }) => {
+  const queryClient = useQueryClient();
+  const cancelBooking = useMutation({
+    mutationKey: ["cancelBooking", booking.id],
+    mutationFn: async () => {
+      return await Services.cancelBooking(booking.id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["bookings"] });
+    },
+  });
+
   return (
-    <ListItem alignItems="flex-start">
+    <ListItem
+      alignItems="flex-start"
+      key={key}
+      secondaryAction={
+        <Chip
+          label={booking.cancelled ? "Cancelled" : "Booked"}
+          color={booking.cancelled ? "error" : "success"}
+        />
+      }
+    >
       <ListItemAvatar>
         <ImageBox
           sx={{ width: "100px", height: "100px", marginRight: "1rem" }}
@@ -47,19 +70,13 @@ const BookingCard: FC<BookingCardProps> = ({ booking, key }) => {
               )} - ${DateUtils.stringToDisplayDate(booking.checkOut)}`}
             </Typography>
 
-            {booking.cancelled ? (
-              <Typography fontWeight={500} variant="body2" color="red">
-                Cancelled
-              </Typography>
-            ) : (
-              <Typography
-                fontWeight={500}
-                variant="body2"
-                color="green
-              "
+            {!booking.cancelled && (
+              <Link
+                sx={{ cursor: "pointer" }}
+                onClick={() => cancelBooking.mutate()}
               >
-                Booked
-              </Typography>
+                Cancel
+              </Link>
             )}
           </React.Fragment>
         }

@@ -6,7 +6,7 @@ export class HotelRoomRepository {
   public static findById(id: number) {
     return hotelRoom.findUnique({
       where: { id },
-      include: { hotel: true },
+      include: { hotel: true, bookings: true },
     });
   }
 }

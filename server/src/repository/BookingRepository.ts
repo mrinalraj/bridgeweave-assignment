@@ -11,4 +11,11 @@ export class BookingRepository {
   }
 
   public static save = hotel.create;
+
+  public static cancelBooking(bookingId: number) {
+    return hotel.update({
+      where: { id: bookingId },
+      data: { cancelled: true },
+    });
+  }
 }

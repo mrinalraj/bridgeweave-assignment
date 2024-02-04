@@ -4,6 +4,7 @@ import HotelsList from "./pages/HotelList/HotelsList";
 import Root from "./pages/Root";
 import HotelDetails from "./pages/HotelDetails/HotelDetails";
 import Bookings from "./pages/Bookings/Bookings";
+import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -22,6 +23,10 @@ const Router = () => {
         {
           path: "/bookings",
           Component: Bookings,
+        },
+        {
+          path: "/checkout/:id",
+          Component: CheckoutPage,
         },
       ],
     },

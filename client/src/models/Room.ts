@@ -1,3 +1,5 @@
+import { Hotel } from "./Hotel";
+
 export interface Room {
   id: number;
   name: string;
@@ -5,6 +7,7 @@ export interface Room {
   rent: number;
   photos: string[];
   hotelId: number;
+  hotel?: Hotel;
   beds: number;
   guests: number;
   inclusions: string[];

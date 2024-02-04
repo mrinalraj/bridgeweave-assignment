@@ -13,9 +13,19 @@ BookingController.route("/").get(
   }
 );
 
-BookingController.route("/create").post(
+BookingController.route("/").post(
   async (req: Request<any, any, BookingRequest, any>, res) => {
     const response = await BookingService.createBooking(req.body);
+
+    return res.json(new ResponseBuilder().setData(response));
+  }
+);
+
+BookingController.route("/:id").delete(
+  async (req: Request<{ id: string }, any, any, any>, res) => {
+    const response = await BookingService.cancelBooking(
+      parseInt(req.params.id)
+    );
 
     return res.json(new ResponseBuilder().setData(response));
   }

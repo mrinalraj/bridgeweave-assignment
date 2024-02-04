@@ -27,4 +27,8 @@ export class BookingService {
 
     return await BookingRepository.findByUserId(user.id);
   }
+
+  public static async cancelBooking(bookingId: number) {
+    return await BookingRepository.cancelBooking(bookingId);
+  }
 }
