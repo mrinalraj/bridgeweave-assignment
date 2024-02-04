@@ -15,13 +15,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ResponseEntity } from "../../models/Response";
 import { Hotel } from "../../models/Hotel";
 import hotelDetailsStyles from "./HotelDetails.styles";
-import styled from "@emotion/styled";
 import ShieldIcon from "@mui/icons-material/Shield";
-
-const ImageBox = styled(Box)<{ image: string }>`
-  background-image: ${(props) => `url("${props.image}")`};
-  background-size: cover;
-`;
+import RoomCard from "../../components/RoomCard/RoomCard";
+import ImageBox from "../../components/ImageBox/ImageBox";
 
 const HotelDetails = () => {
   const param = useParams();
@@ -56,7 +52,12 @@ const HotelDetails = () => {
             {data?.data?.name}
           </Typography>
 
-          <Link underline="none" sx={hotelDetailsStyles.mapLink} href="#">
+          <Link
+            underline="none"
+            sx={hotelDetailsStyles.mapLink}
+            href={`https://maps.google.com/?q=${data?.data?.location}`}
+            target="_blank"
+          >
             <MapIcon />
             <Typography variant="body1" fontWeight={500}>
               {data?.data?.address}
@@ -89,7 +90,11 @@ const HotelDetails = () => {
             <Typography color="GrayText">
               <b>1 Room</b> per night
             </Typography>
-            <Button sx={{ marginTop: "2rem" }} variant="contained">
+            <Button
+              sx={{ marginTop: "2rem" }}
+              variant="contained"
+              href="#room-options"
+            >
               View {data?.data?.rooms.length} room options
             </Button>
           </Box>
@@ -121,6 +126,14 @@ const HotelDetails = () => {
             </Box>
           </Box>
         </Box>
+        <Box my="2rem">
+          <Typography variant="h6" fontWeight={600}>
+            About this hotel
+          </Typography>
+          <Typography mt="1rem" variant="body2">
+            {data?.data?.description}
+          </Typography>
+        </Box>
       </Container>
 
       <Box
@@ -128,7 +141,7 @@ const HotelDetails = () => {
         sx={{
           backgroundColor: "white",
           paddingTop: "1rem",
-          marginTop: "2rem",
+          margin: "2rem 0 4rem 0",
           boxShadow: "rgba(0, 0, 0, 0.15) 0px -2px 4px 0px;",
         }}
       >
@@ -136,28 +149,9 @@ const HotelDetails = () => {
           <Typography variant="h5" fontWeight={600}>
             Room Options
           </Typography>
-          <Box display="flex" gap="1rem" mt="2rem">
+          <Box display="flex" flexDirection="column" gap="1rem" mt="2rem">
             {data?.data?.rooms.map((room) => (
-              <Box
-                key={room.id}
-                sx={{
-                  backgroundColor: "white",
-                  padding: "1rem",
-                  borderRadius: "8px",
-                  boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 4px 0px;",
-                }}
-              >
-                <Typography variant="h6" fontWeight={600}>
-                  {room.name}
-                </Typography>
-                <Typography variant="subtitle2" color="GrayText">
-                  {room.description}
-                </Typography>
-                <Typography variant="h5" fontWeight={600}>
-                  ₹ {room.rent}
-                </Typography>
-                <Button variant="contained">Book Now</Button>
-              </Box>
+              <RoomCard key={room.id} room={room} />
             ))}
           </Box>
         </Container>

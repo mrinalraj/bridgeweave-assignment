@@ -7,7 +7,7 @@ import {
   Paper,
   Slider,
 } from "@mui/material";
-import React, { Component, FC } from "react";
+import React, { Component, FC, useState } from "react";
 import LuggageIcon from "@mui/icons-material/Luggage";
 
 interface SearchBarProps {
@@ -19,6 +19,8 @@ const SearchBar: FC<SearchBarProps> = ({ searchArea, setSearchArea }) => {
   const handleChange = (event: Event, newValue: number | number[]) => {
     console.log(newValue);
   };
+
+  const [area, setArea] = useState(searchArea);
   return (
     <Box
       sx={{
@@ -38,12 +40,12 @@ const SearchBar: FC<SearchBarProps> = ({ searchArea, setSearchArea }) => {
           </Box>
           <InputBase
             sx={{ ml: 1, flex: 1 }}
-            value={searchArea}
-            onChange={(e) => setSearchArea(e.target.value)}
+            value={area}
+            onChange={(e) => setArea(e.target.value)}
             placeholder="Where do you wanna go?"
             inputProps={{ "aria-label": "search for hotels" }}
           />
-          <Button>Search</Button>
+          <Button onClick={() => setSearchArea(area)}>Search</Button>
         </Paper>
 
         {/* <Box mt="1rem">

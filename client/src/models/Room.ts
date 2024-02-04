@@ -5,4 +5,7 @@ export interface Room {
   rent: number;
   photos: string[];
   hotelId: number;
+  beds: number;
+  guests: number;
+  inclusions: string[];
 }
