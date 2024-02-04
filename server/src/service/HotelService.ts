@@ -1,5 +1,4 @@
 import { HotelRepository } from "../repository/HotelRepository";
-import { asyncHandler } from "../utils/AsyncHandler";
 import { HotelResponse } from "../dto/HotelResponse";
 import { HotelRequestFilters } from "../dto/HotelRequestFilters";
 import { logger } from "../Logger";

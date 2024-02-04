@@ -1,7 +1,8 @@
 import { Express } from "express";
-// import { AuthenticationMiddleware } from "../middlewares/AuthentcationMiddleware";
 import { HotelController } from "./HotelContoller";
+import { BookingController } from "./BookingController";
 
 export const controllers = (app: Express) => {
   app.use("/hotels", HotelController);
+  app.use("/bookings", BookingController);
 };

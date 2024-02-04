@@ -1,10 +1,10 @@
 import React from "react";
-
-import { AppBar, Box, Container, IconButton, Typography } from "@mui/material";
-import LuggageIcon from "@mui/icons-material/Luggage";
+import { Box, Container, IconButton, Typography } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
+  const navigate = useNavigate();
   return (
     <Box
       padding={"1rem"}
@@ -23,13 +23,13 @@ export const Header = () => {
               color="#6a6898"
               variant="h5"
               fontWeight={600}
-              marginLeft="2rem"
+              marginLeft="1.5rem"
               letterSpacing="0.5rem"
             >
               HOTELBEA
             </Typography>
           </Box>
-          <IconButton>
+          <IconButton onClick={() => navigate("/bookings")}>
             <AccountCircleIcon />
           </IconButton>
         </Box>

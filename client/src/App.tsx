@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Router from "./Router";
-import { Header } from "./components/Header/Header";
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import DeviceIdUtil from "./utils/DeviceIdUtil";
 
 function App() {
+  useEffect(() => {
+    const hasDeviceId = DeviceIdUtil.hasDeviceId();
+    if (!hasDeviceId) {
+      DeviceIdUtil.setDeviceId(DeviceIdUtil.generateDeviceId());
+    }
+  }, []);
+
   const theme = createTheme({
     palette: {
       primary: {

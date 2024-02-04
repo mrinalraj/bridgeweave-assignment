@@ -10,4 +10,7 @@ export default {
     const query = new URLSearchParams(filter).toString();
     return fetch(`${base}/hotels/search?${query}`).then((res) => res.json());
   },
+
+  getBookingList: (deviceId: string) =>
+    fetch(`${base}/bookings?deviceId=${deviceId}`).then((res) => res.json()),
 };
