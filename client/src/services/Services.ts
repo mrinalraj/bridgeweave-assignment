@@ -4,7 +4,7 @@ import { BookingRequest } from "../models/BookingRequest";
 import { Filters } from "../models/Filters";
 import { UserRequest } from "../models/UserRequest";
 
-const base = "http://localhost:8001";
+const base = "http://localhost:8000";
 export default {
   getAllHotels: () => fetch(`${base}/hotels/list`).then((res) => res.json()),
   getHotelById: (id: string) =>

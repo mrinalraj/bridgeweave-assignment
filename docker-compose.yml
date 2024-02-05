@@ -14,7 +14,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - backend
+      - server
 
   server:
     build: ./server
@@ -24,13 +24,13 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://myuser:mypassword@localhost:5435/hoteldb
-      SECRET_KEY: mysecretkey
+      DATABASE_URL: postgresql://myuser:mypassword@db:5432/hoteldb?connect_timeout=300
       DEBUG: True
       ALLOWED_HOSTS: localhost
+      PORT: 8000
     networks:
-      - backend
-      - frontend
+      - server
+      - client
 
   client:
     build: ./client
@@ -38,11 +38,13 @@ services:
     ports:
       - 3000:3000
     networks:
-      - frontend
+      - client
 
 volumes:
   postgres_data:
 
 networks:
-  backend:
-  frontend:
+  server:
+    driver: bridge
+  client:
+    driver: bridge
