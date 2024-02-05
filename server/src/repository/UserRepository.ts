@@ -10,4 +10,5 @@ export class UserRepository {
   }
 
   public static save = user.create;
+  public static update = user.update;
 }

@@ -3,7 +3,7 @@ import Router from "./Router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import DeviceIdUtil from "./utils/DeviceIdUtil";
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
   return (
     <div className="App" style={{ background: "#eef4fd", minHeight: "100vh" }}>
       <QueryClientProvider client={new QueryClient()}>
-        <LocalizationProvider dateAdapter={AdapterMoment}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <Router />

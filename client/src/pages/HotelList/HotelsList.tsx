@@ -6,18 +6,16 @@ import { Hotel } from "../../models/Hotel";
 import { ResponseEntity } from "../../models/Response";
 import HotelCard from "../../components/HotelCard/HotelCard";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import { Filters } from "../../models/Filters";
 
 const HotelsList = () => {
-  const [searchArea, setSeasrchArea] = useState<string>("");
+  const [filters, setFilters] = useState<Filters>({});
   const { data, isLoading, isError, refetch } = useQuery<
     ResponseEntity<Hotel[]>
   >({
     queryKey: ["hotels-list"],
     queryFn: async () => {
-      if (searchArea) {
-        return await Services.getHotelsWithFilter({ address: searchArea });
-      }
-      return await Services.getAllHotels();
+      return await Services.getHotelsWithFilter(filters);
     },
   });
 
@@ -25,14 +23,14 @@ const HotelsList = () => {
     {
       refetch();
     }
-  }, [searchArea]);
+  }, [filters]);
 
   return (
     <Box>
-      <SearchBar searchArea={searchArea} setSearchArea={setSeasrchArea} />
+      <SearchBar setFilters={setFilters} />
       <Container maxWidth="lg">
         <Typography variant="h5" fontWeight={600} my="2rem">
-          Hotels in {searchArea || "your area"}
+          Hotels in {filters.address || "your area"}
         </Typography>
         {isLoading && <p>Loading...</p>}
         {isError && <p>Error</p>}

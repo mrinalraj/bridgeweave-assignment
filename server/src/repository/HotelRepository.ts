@@ -23,26 +23,23 @@ export class HotelRepository {
 
     if (filters.minRent || filters.maxRent) {
       where.AND.push({
-        AND: [
-          {
-            rooms: {
-              some: {
-                rent: {
-                  gte: filters.minRent ? parseFloat(filters.minRent) : 0,
-                },
-              },
+        rooms: {
+          some: {
+            rent: {
+              gte: filters.minRent ? parseFloat(filters.minRent) : 0,
+              lte: filters.maxRent ? parseFloat(filters.maxRent) : 100000,
             },
           },
-          {
-            rooms: {
-              some: {
-                rent: {
-                  lte: filters.maxRent ? parseFloat(filters.maxRent) : 100000,
-                },
-              },
-            },
-          },
-        ],
+        },
+      });
+    }
+
+    if (filters.minRating || filters.maxRating) {
+      where.AND.push({
+        rating: {
+          gte: filters.minRating ? parseFloat(filters.minRating) : 0,
+          lte: filters.maxRating ? parseFloat(filters.maxRating) : 5,
+        },
       });
     }
 

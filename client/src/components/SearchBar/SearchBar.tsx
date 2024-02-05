@@ -6,33 +6,46 @@ import {
   InputBase,
   Paper,
   Slider,
+  Typography,
 } from "@mui/material";
-import React, { Component, FC, useState } from "react";
+import React, { FC, useMemo, useReducer, useState } from "react";
 import LuggageIcon from "@mui/icons-material/Luggage";
+import searchbarStyles from "./SearchBar.styles";
+import { Filters, FiltersState } from "../../models/Filters";
 
 interface SearchBarProps {
-  searchArea: string;
-  setSearchArea: (searchArea: string) => void;
+  setFilters: (filters: Filters) => void;
 }
 
-const SearchBar: FC<SearchBarProps> = ({ searchArea, setSearchArea }) => {
-  const handleChange = (event: Event, newValue: number | number[]) => {
-    console.log(newValue);
+const SearchBar: FC<SearchBarProps> = ({ setFilters }) => {
+  const [state, setState] = useReducer(
+    (state: FiltersState, action: Partial<FiltersState>) => ({
+      ...state,
+      ...action,
+    }),
+    {
+      rentRange: [2500, 8000],
+      ratingRange: [4, 5],
+      address: "",
+    }
+  );
+
+  const handleChange = (name: keyof FiltersState) => (value: any) => {
+    setState({ [name]: value });
   };
 
-  const [area, setArea] = useState(searchArea);
+  const currentFilters: Filters = useMemo(() => {
+    return {
+      address: state.address,
+      maxRent: state.rentRange[1],
+      minRent: state.rentRange[0],
+      maxRating: state.ratingRange[1],
+      minRating: state.ratingRange[0],
+    };
+  }, [state]);
+
   return (
-    <Box
-      sx={{
-        backgroundImage: "linear-gradient(to bottom right, #6a6898, #8798f1)",
-      }}
-      py="2rem"
-      position={"sticky"}
-      top={0}
-      right={0}
-      boxShadow={"rgba(0, 0, 0, 0.15) 0px 2px 4px 0px;"}
-      zIndex={1001}
-    >
+    <Box sx={searchbarStyles.background}>
       <Container maxWidth="lg">
         <Paper sx={{ p: "2px 4px", display: "flex", alignItems: "center" }}>
           <Box sx={{ p: "1rem" }}>
@@ -40,24 +53,48 @@ const SearchBar: FC<SearchBarProps> = ({ searchArea, setSearchArea }) => {
           </Box>
           <InputBase
             sx={{ ml: 1, flex: 1 }}
-            value={area}
-            onChange={(e) => setArea(e.target.value)}
+            value={state.address}
+            onChange={(e) => handleChange("address")(e.target.value)}
             placeholder="Where do you wanna go?"
             inputProps={{ "aria-label": "search for hotels" }}
           />
-          <Button onClick={() => setSearchArea(area)}>Search</Button>
+          <Button onClick={() => setFilters(currentFilters)}>Search</Button>
         </Paper>
 
-        {/* <Box mt="1rem">
-          <Slider
-            getAriaLabel={() => "Temperature range"}
-            value={[20, 37]}
-            onChange={handleChange}
-            valueLabelDisplay="auto"
-            // getAriaValueText={valuetext}
-
-          />
-        </Box> */}
+        <Box sx={searchbarStyles.slidersArea}>
+          <Box sx={{ width: "100%" }}>
+            <Typography variant="body2" fontWeight={600}>
+              Price range: <span>0 - 10000</span>
+            </Typography>
+            <Slider
+              getAriaLabel={() => "Rent Range"}
+              value={state.rentRange}
+              max={10000}
+              min={0}
+              step={500}
+              onChange={(_, value) =>
+                handleChange("rentRange")(value as number[])
+              }
+              valueLabelDisplay="on"
+            />
+          </Box>
+          <Box sx={{ width: "100%" }}>
+            <Typography variant="body2" fontWeight={600}>
+              Rating: <span>0 - 5</span>
+            </Typography>
+            <Slider
+              getAriaLabel={() => "Rating Range"}
+              value={state.ratingRange}
+              max={5}
+              min={0}
+              step={0.5}
+              onChange={(_, value) =>
+                handleChange("ratingRange")(value as number[])
+              }
+              valueLabelDisplay="on"
+            />
+          </Box>
+        </Box>
       </Container>
     </Box>
   );
