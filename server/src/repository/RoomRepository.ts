@@ -3,6 +3,13 @@ import DBClient from "./DBClient";
 const room = DBClient.room;
 
 export class RoomRepository {
+  public static findById(id: number) {
+    return room.findUnique({
+      where: { id },
+      include: { hotel: true, bookings: true },
+    });
+  }
+
   public static async getRoomsByHotelId(hotelId: number) {
     return await room.findMany({
       where: {
