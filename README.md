@@ -48,3 +48,9 @@ I have added a `setup.sql` which can be run on the db to populate the initial da
 ```
 postgresql://myuser:mypassword@localhost:5435/hoteldb?schema=public
 ```
+
+### assumptions and areas missed
+
+- missed responsive page designs
+- UI test not included
+- a unique device id is generated on first visit, this acts like a session and the bookings are stored against this deviceId. This is a makeshift attempt to browser fingerprinting.
