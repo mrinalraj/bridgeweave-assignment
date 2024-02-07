@@ -41,18 +41,11 @@ model Booking {
   hotel     Hotel    @relation(fields: [hotelId], references: [id])
   roomId    Int
   room      Room     @relation(fields: [roomId], references: [id])
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  name      String
+  email     String
+  phone     String
+  deviceId  String
   checkIn   DateTime
   checkOut  DateTime
   cancelled Boolean
-}
-
-model User {
-  id       Int       @id @default(autoincrement())
-  name     String
-  email    String    @unique
-  phone    String
-  deviceId String
-  bookings Booking[]
 }

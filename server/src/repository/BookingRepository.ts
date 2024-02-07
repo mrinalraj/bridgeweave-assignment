@@ -3,9 +3,9 @@ import DBClient from "./DBClient";
 const hotel = DBClient.booking;
 
 export class BookingRepository {
-  public static findByUserId(userId: number) {
+  public static findByDeviceId(deviceId: string) {
     return hotel.findMany({
-      where: { userId },
+      where: { deviceId },
       include: { room: true, hotel: true },
     });
   }

@@ -11,7 +11,6 @@ export class GeneralError extends Error {
   get statusCode() {
     if (this instanceof BadRequest) return StatusCodes.BAD_REQUEST;
     if (this instanceof NotFound) return StatusCodes.NOT_FOUND;
-    if (this instanceof Unauthorised) return StatusCodes.UNAUTHORIZED;
     return StatusCodes.INTERNAL_SERVER_ERROR;
   }
 }
@@ -28,12 +27,5 @@ export class NotFound extends GeneralError {
     super(message);
     this.name = "NotFound";
     Object.setPrototypeOf(this, NotFound.prototype);
-  }
-}
-export class Unauthorised extends GeneralError {
-  constructor(message: string) {
-    super(message);
-    this.name = "Unauthorised";
-    Object.setPrototypeOf(this, Unauthorised.prototype);
   }
 }

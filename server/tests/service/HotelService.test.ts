@@ -3,21 +3,10 @@ import { RoomRepository } from "../../src/repository/RoomRepository";
 import { HotelService } from "../../src/service/HotelService";
 import { BadRequest } from "../../src/utils/Errors";
 import { Room } from "../Entities";
+import { hotel, room } from "../EntityFactory";
 
 jest.mock("../../src/repository/HotelRepository");
 jest.mock("../../src/repository/RoomRepository");
-
-const hotel = {
-  id: 1,
-  name: "Test",
-  description: "Test",
-  address: "Test",
-  location: "Test, Test",
-  rating: 4,
-  photos: ["Test"],
-  rooms: [],
-  bookings: [],
-};
 
 describe("HotelService", () => {
   const mockedRepository = jest.mocked(HotelRepository);
@@ -67,16 +56,7 @@ describe("HotelService", () => {
 
   test("checkAvailability", async () => {
     mockedRepository.findById.mockResolvedValue(hotel);
-    const room: Room = {
-      id: 1,
-      hotelId: 1,
-      name: "Test",
-      rent: 100,
-      guests: 2,
-      beds: 1,
-      photos: ["Test"],
-      inclusions: ["Test"],
-    };
+
     mockedRoomRepository.getAvailableRoomsByHotelId.mockResolvedValue([room]);
 
     const result = await HotelService.checkAvailability(

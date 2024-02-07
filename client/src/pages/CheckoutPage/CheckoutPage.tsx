@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import React, { useReducer } from "react";
+import React, { useMemo, useReducer } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Services from "../../services/Services";
 import {
@@ -21,7 +21,6 @@ import { UserRequest } from "../../models/UserRequest";
 import DeviceIdUtil from "../../utils/DeviceIdUtil";
 import checkoutPageStyles from "./CheckoutPage.styles";
 import { BookingRequest } from "../../models/BookingRequest";
-import { User } from "../../models/User";
 import { ArrowBack } from "@mui/icons-material";
 
 const CheckoutPage = () => {
@@ -53,28 +52,23 @@ const CheckoutPage = () => {
     },
   });
 
+  const getBookingRequest = useMemo(() => {
+    return {
+      ...state,
+      checkIn: checkin!.format("YYYY-MM-DD"),
+      checkOut: checkout!.format("YYYY-MM-DD"),
+      roomId: parseInt(param.id!),
+      deviceId: state.deviceId,
+    };
+  }, [state, checkin, checkout, param.id]);
+
   const createBooking = useMutation<ResponseEntity<any>, any, BookingRequest>({
     mutationKey: ["createBooking"],
-    mutationFn: async (user) => {
-      return await Services.createBooking(user);
+    mutationFn: async (data) => {
+      return await Services.createBooking(data);
     },
     onSuccess: () => {
       navigate("/bookings");
-    },
-  });
-
-  const createUser = useMutation<ResponseEntity<User>, any, UserRequest>({
-    mutationKey: ["createUser"],
-    mutationFn: async (user) => {
-      return await Services.createUser(user);
-    },
-    onSuccess: () => {
-      createBooking.mutate({
-        checkIn: checkin!.format("YYYY-MM-DD"),
-        checkOut: checkout!.format("YYYY-MM-DD"),
-        roomId: parseInt(param.id!),
-        deviceId: state.deviceId,
-      });
     },
   });
 
@@ -120,11 +114,13 @@ const CheckoutPage = () => {
               <DatePicker
                 label="CheckIn"
                 defaultValue={checkin}
+                disablePast
                 onChange={setCheckin}
               />
               <DatePicker
                 label="CheckOut"
                 value={checkout}
+                minDate={checkin!}
                 onChange={setCheckout}
               />
             </Box>
@@ -190,7 +186,7 @@ const CheckoutPage = () => {
             fullWidth
             variant="contained"
             sx={{ marginTop: "1rem", marginBottom: "0.5rem" }}
-            onClick={() => createUser.mutate(state)}
+            onClick={() => createBooking.mutate(getBookingRequest)}
           >
             Book
           </Button>
